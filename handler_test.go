@@ -83,3 +83,13 @@ func TestDefaultHandlerReturnsNotFound(t *testing.T) {
 		t.Error("Default handler did not produce not found response")
 	}
 }
+
+func TestNotImplementedHandlerReturnsInternalServerError(t *testing.T) {
+	response, err := NotImplementedHandler(Request{})
+	if err == nil {
+		t.Error("Not implemented handler did not produce error")
+	}
+	if response != nil {
+		t.Error("Not implemented handler produced a response")
+	}
+}

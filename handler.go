@@ -1,6 +1,7 @@
 package yam
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -11,6 +12,11 @@ type Handler = func(Request) (Response, error)
 // The default handler, simply returning not found.
 func DefaultHandler(Request) (Response, error) {
 	return NotFound{}, nil
+}
+
+// This handler can be used as a placeholder for not-implemented endpoints
+func NotImplementedHandler(Request) (Response, error) {
+	return nil, errors.New("not implemented")
 }
 
 // adapt adapts a handler to the http.HandlerFunc interface by ensuring the the return response is written to the http.ResponseWriter.
