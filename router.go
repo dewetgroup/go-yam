@@ -37,6 +37,7 @@ func (router *Router) Route(method Method, path string, handler Handler) *Router
 	validate(path)
 	pattern := fmt.Sprintf("%s %s", method, path)
 	router.multiplexer.Handle(pattern, adapt(handler))
+	router.build()
 	return router
 }
 
@@ -47,11 +48,11 @@ func (router *Router) Link(path string, otherRouter *Router) *Router {
 	validate(path)
 	prefix := path[:len(path)-1]
 	router.multiplexer.Handle(path, http.StripPrefix(prefix, otherRouter))
+	router.build()
 	return router
 }
 
 func (router *Router) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	router.build()
 	router.handler.ServeHTTP(writer, request)
 }
 
